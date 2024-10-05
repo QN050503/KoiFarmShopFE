@@ -1,10 +1,27 @@
 // import React from 'react'
 import AuthenTemplate from "../../components/authen-template";
 import { Form, Input } from "antd";
+import axios from "axios";
+import { useEffect } from "react";
 // import { gooleProvider } from "../../config/firebase";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
+  const [setKois] = useState([]);
+  const api = "https://localhost:44349/api/Auth/login";
+  const fetchKoi = async () => {
+    const reponse = await axios.get(api);
+
+    console.log(reponse.data);
+    setKois(reponse.data);
+  };
+  useEffect(() => {
+    //chạy 1 hành động nào đó
+    //event
+    //[] => chạy in the first loaded
+    //[num] => chạy với number thay đổi
+    fetchKoi();
+  }, []);
   // const handleLoginGoole = () => {
   //   const auth = getAuth();
   //   signInWithPopup(auth, gooleProvider)
