@@ -1,28 +1,41 @@
 // import React from 'react'
 import AuthenTemplate from "../../components/authen-template";
-import { Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import HomePage from "../home";
+import api from "../../config/axios";
 // import { gooleProvider } from "../../config/firebase";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
-  // const [setKois] = useState([]);
-  // const api = "https://localhost:44349/api/Auth/login";
-  // const fetchKoi = async () => {
-  //   const reponse = await axios.get(api);
-
-  //   console.log(reponse.data);
-  //   setKois(reponse.data);
+  const navigate = useNavigate();
+  const handleLogin = async (values) => {
+    try {
+      const json = JSON.stringify(values);
+      const respone = await api.post("/Auth/login", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: json,
+      });
+      console.log(respone);
+    } catch (err) {
+      toast.error(err.respone);
+    }
+  };
+  // const handleLogin = async (values) => {
+  //   try {
+  //     const respone = await api.post("/Auth/login", values);
+  //     console.log(respone);
+  //   } catch (err) {
+  //     toast.error(err.respone);
+  //   }
   // };
-  // useEffect(() => {
-  //   //chạy 1 hành động nào đó
-  //   //event
-  //   //[] => chạy in the first loaded
-  //   //[num] => chạy với number thay đổi
-  //   fetchKoi();
-  // }, []);
+
   // const handleLoginGoole = () => {
   //   const auth = getAuth();
   //   signInWithPopup(auth, gooleProvider)
@@ -52,8 +65,8 @@ function LoginPage() {
   //  };
   return (
     <AuthenTemplate>
-      <Form labelCol={{ span: 24 }}>
-        <Form.Item label="Username" name="username">
+      <Form labelCol={{ span: 24 }} onFinish={handleLogin}>
+        <Form.Item label="Email" name="email">
           <Input />
         </Form.Item>
         <Form.Item label="Password" name="password">
@@ -63,7 +76,9 @@ function LoginPage() {
         {/* //link react router dom */}
         <Link to="/register">Register new account</Link>
 
-        <button>Login</button>
+        <Button type="primary" htmlType="submit">
+          Login
+        </Button>
         {/* <button onClick={handleLoginGoole}>Login Goole</button> */}
       </Form>
     </AuthenTemplate>

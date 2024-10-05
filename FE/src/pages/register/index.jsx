@@ -1,19 +1,35 @@
 // import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthenTemplate from "../../components/authen-template";
 import { Form, Input, message } from "antd";
+import api from "../../config/axios";
+import { toast } from "react-toastify";
 
 function RegisterPage() {
+  //chuyển trang bằng react hook
+  const navigate = useNavigate();
+  const handleRegister = async (values) => {
+    //submit xuống BE
+    try {
+      const respone = await api.post("register", values);
+      console.log(respone);
+
+      toast.success("Successfully register new account!");
+      navigate("/login");
+    } catch (err) {
+      toast.error(err.respone.data); //BE trả lỗi
+    }
+  };
   return (
     <AuthenTemplate>
-      <Form labelCol={{ span: 24 }}>
+      <Form labelCol={{ span: 24 }} onFinish={handleRegister}>
         <Form.Item
-          label="Username"
-          name="username"
+          label="Email"
+          name="email"
           rules={[
             {
               required: true,
-              message: "Please input your username",
+              message: "Please input your email",
             },
           ]}
         >
@@ -109,7 +125,9 @@ function RegisterPage() {
         <Link to="/login">Already have account? Let's Login</Link>
 
         <Form.Item>
-          <button>Regist</button>
+          <button type="primary" htmlTpye="submit">
+            Register
+          </button>
         </Form.Item>
       </Form>
     </AuthenTemplate>
