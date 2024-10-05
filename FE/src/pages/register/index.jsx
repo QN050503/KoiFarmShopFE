@@ -1,4 +1,5 @@
 // import React from "react";
+import { Link } from "react-router-dom";
 import AuthenTemplate from "../../components/authen-template";
 import { Form, Input, message } from "antd";
 
@@ -105,6 +106,7 @@ function RegisterPage() {
         >
           <Input />
         </Form.Item>
+        <Link to="/login">Already have account? Let's Login</Link>
 
         <Form.Item>
           <button>Regist</button>
