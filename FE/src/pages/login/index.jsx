@@ -4,25 +4,21 @@ import { Form, Input } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import api from "../../config/axios";
+import { toast } from "react-toastify";
 // import { gooleProvider } from "../../config/firebase";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
-  // const [setKois] = useState([]);
-  // const api = "https://localhost:44349/api/Auth/login";
-  // const fetchKoi = async () => {
-  //   const reponse = await axios.get(api);
+  const handleLogin = async (values) => {
+    try {
+      const respone = await api.post("login", values);
+      console.log(respone);
+    } catch (err) {
+      toast.error(err.respone.data);
+    }
+  };
 
-  //   console.log(reponse.data);
-  //   setKois(reponse.data);
-  // };
-  // useEffect(() => {
-  //   //chạy 1 hành động nào đó
-  //   //event
-  //   //[] => chạy in the first loaded
-  //   //[num] => chạy với number thay đổi
-  //   fetchKoi();
-  // }, []);
   // const handleLoginGoole = () => {
   //   const auth = getAuth();
   //   signInWithPopup(auth, gooleProvider)
@@ -52,7 +48,7 @@ function LoginPage() {
   //  };
   return (
     <AuthenTemplate>
-      <Form labelCol={{ span: 24 }}>
+      <Form labelCol={{ span: 24 }} onFinish={handleLogin}>
         <Form.Item label="Username" name="username">
           <Input />
         </Form.Item>
@@ -63,7 +59,9 @@ function LoginPage() {
         {/* //link react router dom */}
         <Link to="/register">Register new account</Link>
 
-        <button>Login</button>
+        <button type="primary" htmlType="submit">
+          Login
+        </button>
         {/* <button onClick={handleLoginGoole}>Login Goole</button> */}
       </Form>
     </AuthenTemplate>
