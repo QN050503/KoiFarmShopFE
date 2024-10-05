@@ -8,15 +8,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import HomePage from "../home";
 import api from "../../config/axios";
+import RegisterPage from "../register";
 // import { gooleProvider } from "../../config/firebase";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
   const navigate = useNavigate();
   const handleLogin = async (values) => {
+    console.log("=================");
     try {
+      console.log("=============1111====");
       const json = JSON.stringify(values);
-      const respone = await api.post("/Auth/login", {
+      console.log("=================" + json);
+      const respone = await api.post("Auth/login", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -24,6 +28,7 @@ function LoginPage() {
       });
       console.log(respone);
     } catch (err) {
+      console.log(err);
       toast.error(err.respone);
     }
   };
