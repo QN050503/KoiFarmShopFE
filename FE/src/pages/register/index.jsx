@@ -1,14 +1,37 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
-// import React from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import AuthenTemplate from "../../components/authen-template";
 import { Form, Input, message } from "antd";
 
 function RegisterPage() {
+  const navigate = useNavigate();
+
+  const handleRegister = (values) => {
+    // Send POST request to your API
+    axios
+      .post("https://localhost:44349/api/Auth/register", {
+        username: values.username,
+        password: values.password,
+        fullname: values.fullname,
+        phone: values.phone,
+        email: values.email,
+      })
+      .then((response) => {
+        message.success("Registration successful!");
+        navigate("/login"); // Redirect to login page after success
+      })
+      .catch((error) => {
+        message.error("Registration failed. Please try again.");
+        console.error(error);
+      });
+  };
+
   return (
     <AuthenTemplate>
-      <Form labelCol={{ span: 24 }}>
+      <Form labelCol={{ span: 24 }} onFinish={handleRegister}>
         <Form.Item
           label="Username"
           name="username"
