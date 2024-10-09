@@ -1,143 +1,116 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import AuthenTemplate from "../../components/authen-template";
-import { Form, Input, message } from "antd";
+import "bootstrap/dist/css/bootstrap.css";
 
 function RegisterPage() {
   const navigate = useNavigate();
+  
+  const [formData, setFormData] = useState({
+    email: "huy@gmail.com",
+    password: "123456",
+    confirmPassword: "123456",
+    fullname: "Khuat Truong Huy",
+    phone: "0981073168",
+  });
 
-  const handleRegister = (values) => {
-    // Send POST request to your API
-    axios
-      .post("https://localhost:44349/api/Auth/register", {
-        username: values.username,
-        password: values.password,
-        fullname: values.fullname,
-        phone: values.phone,
-        email: values.email,
-      })
-      .then((response) => {
-        message.success("Registration successful!");
-        navigate("/login"); // Redirect to login page after success
-      })
-      .catch((error) => {
-        message.error("Registration failed. Please try again.");
-        console.error(error);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Kiểm tra xem mật khẩu và xác nhận mật khẩu có giống nhau không
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5158/api/Auth/register", {
+        email: formData.email,
+        password: formData.password,
+        fullname: formData.fullname,
+        phone: formData.phone,
       });
+      
+      console.log(response.data);
+      alert("Registration successful!");
+      navigate("/login"); // Chuyển hướng đến trang đăng nhập
+    } catch (error) {
+      console.error("Registration failed", error);
+      alert("Registration failed. Please try again.");
+    }
   };
 
   return (
-    <AuthenTemplate>
-      <Form labelCol={{ span: 24 }} onFinish={handleRegister}>
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "Please input your username",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password",
-            },
-            {
-              min: 6,
-              message: "Password must be at least 6 characters long",
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          label="Confirm Password"
-          name="confirmPassword"
-          dependencies={["password"]}
-          rules={[
-            {
-              required: true,
-              message: "Please confirm your password",
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  new Error("The two passwords do not match!")
-                );
-              },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          label="Fullname"
-          name="fullname"
-          rules={[
-            {
-              required: true,
-              message: "Please input your fullname",
-            },
-            {
-              pattern: /^[a-zA-Z\s]+$/,
-              message: "Fullname can only contain letters and spaces",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Phone"
-          name="phone"
-          rules={[
-            {
-              required: true,
-              message: "Please input your phone number",
-            },
-            {
-              pattern: /^\d{10,11}$/,
-              message: "Phone number must be 10-11 digits",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Email"
+    <form onSubmit={handleSubmit} className="p-5">
+      <div className="form-group">
+        <label>Email</label>
+        <input
+          type="email"
           name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your email",
-            },
-            {
-              type: "email",
-              message: "Please enter a valid email address",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Link to="/login">Already have account? Let's Login</Link>
-
-        <Form.Item>
-          <button>Regist</button>
-        </Form.Item>
-      </Form>
-    </AuthenTemplate>
+          className="form-control"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Fullname</label>
+        <input
+          type="text"
+          name="fullname"
+          className="form-control"
+          value={formData.fullname}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Phone</label>
+        <input
+          type="text"
+          name="phone"
+          className="form-control"
+          value={formData.phone}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          className="form-control"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          name="confirmPassword"
+          className="form-control"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <button type="submit" className="btn btn-primary mt-3">
+        Register
+      </button>
+      <div>Have an account? <Link to="/login">Login</Link></div>
+    </form>
   );
 }
 

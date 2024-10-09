@@ -8,52 +8,31 @@ import { Link } from "react-router-dom";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
-  // const [setKois] = useState([]);
-  // const api = "https://localhost:44349/api/Auth/login";
-  // const fetchKoi = async () => {
-  //   const reponse = await axios.get(api);
+  const api = "http://localhost:5158/api/Auth/login";
 
-  //   console.log(reponse.data);
-  //   setKois(reponse.data);
-  // };
-  // useEffect(() => {
-  //   //chạy 1 hành động nào đó
-  //   //event
-  //   //[] => chạy in the first loaded
-  //   //[num] => chạy với number thay đổi
-  //   fetchKoi();
-  // }, []);
-  // const handleLoginGoole = () => {
-  //   const auth = getAuth();
-  //   signInWithPopup(auth, gooleProvider)
-  //     .then((result) => {
-  //       // This gives you a Google Access Token. You can use it to access the Google API.
-  //       const credential = GoogleAuthProvider.credentialFromResult(result);
-  //       const token = credential.accessToken;
-  //       // The signed-in user info.
-  //       const user = result.user;
+  const onFinish = async ({ email, password }) => {
+    const reponse = await axios.post(
+      api,
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":
+            "Origin, X-Requested-With, Content-Type, Accept",
+        },
+      }
+    );
+    console.log(reponse.data);
+  };
+  useEffect(() => {}, []);
 
-  //       console.log(user);
-  //       // IdP data available using getAdditionalUserInfo(result)
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       // Handle Errors here.
-  //       // const errorCode = error.code;
-  //       // const errorMessage = error.message;
-
-  //       // The email of the user's account used.
-  //       // const email = error.customData.email;
-  //       // The AuthCredential type that was used.
-  //       // const credential = GoogleAuthProvider.credentialFromError(error);
-  //       // ...
-  //     });
-  //  };
   return (
     <AuthenTemplate>
-      <Form labelCol={{ span: 24 }}>
-        <Form.Item label="Username" name="username">
+      <Form labelCol={{ span: 24 }} onFinish={onFinish}>
+        <Form.Item label="Email" name="email">
           <Input />
         </Form.Item>
         <Form.Item label="Password" name="password">
