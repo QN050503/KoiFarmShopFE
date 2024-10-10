@@ -8,24 +8,23 @@ import { Link } from "react-router-dom";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
-  const api = "http://localhost:5158/api/Auth/login";
+  const api = "https://localhost:7229/api/Auth/login";
 
   const onFinish = async ({ email, password }) => {
-    const reponse = await axios.post(
-      api,
-      {
-        email,
-        password,
-      },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers":
-            "Origin, X-Requested-With, Content-Type, Accept",
-        },
+    try {
+      const response = await axios.post(api, { email, password });
+      console.log(response.data); // handle success
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        console.error("Bad request:", error.response.data); // handle 400 error
+        // Optionally, show user-friendly message:
+        alert(
+          "Invalid login credentials. Please check your email and password."
+        );
+      } else {
+        console.error("An error occurred:", error.message); // handle other errors
       }
-    );
-    console.log(reponse.data);
+    }
   };
   useEffect(() => {}, []);
 

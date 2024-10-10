@@ -7,13 +7,13 @@ import "bootstrap/dist/css/bootstrap.css";
 
 function RegisterPage() {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
-    email: "huy@gmail.com",
-    password: "123456",
-    confirmPassword: "123456",
-    fullname: "Khuat Truong Huy",
-    phone: "0981073168",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    fullname: "",
+    phone: "",
   });
 
   const handleChange = (e) => {
@@ -26,23 +26,25 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra xem mật khẩu và xác nhận mật khẩu có giống nhau không
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:5158/api/Auth/register", {
-        email: formData.email,
-        password: formData.password,
-        fullname: formData.fullname,
-        phone: formData.phone,
-      });
-      
+      const response = await axios.post(
+        "https://localhost:7229/api/Auth/register",
+        {
+          email: formData.email,
+          password: formData.password,
+          fullname: formData.fullname,
+          phone: formData.phone,
+        }
+      );
+
       console.log(response.data);
       alert("Registration successful!");
-      navigate("/login"); // Chuyển hướng đến trang đăng nhập
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed", error);
       alert("Registration failed. Please try again.");
@@ -109,7 +111,9 @@ function RegisterPage() {
       <button type="submit" className="btn btn-primary mt-3">
         Register
       </button>
-      <div>Have an account? <Link to="/login">Login</Link></div>
+      <div>
+        Have an account? <Link to="/login">Login</Link>
+      </div>
     </form>
   );
 }

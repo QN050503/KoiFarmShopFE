@@ -6,4 +6,4 @@ const api = axios.create({
     rejectUnauthorized: false,
   }),
 });
-  export default api;
+export default api;
