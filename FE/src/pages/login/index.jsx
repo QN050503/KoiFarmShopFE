@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
-import HomePage from "../home";
+import HomePage from "../home"; 
 import api from "../../config/axios";
 import RegisterPage from "../register";
 // import { gooleProvider } from "../../config/firebase";
@@ -22,7 +22,6 @@ function LoginPage() {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         console.error("Bad request:", error.response.data); // handle 400 error
-        // Optionally, show user-friendly message:
         alert(
           "Invalid login credentials. Please check your email and password."
         );
