@@ -36,9 +36,71 @@ function CartPage() {
         }
     }
 
-  return <div>
-
-  </div>;
+    const CartTable = ({ carts, title }) => {
+        return (
+          <div>
+            <h2>{title}</h2>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>ID</th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Name
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Email
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Phone
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Status
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {accounts.map((account) => (
+                  <tr key={account.id}>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {account.id}
+                    </td>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {account.name}
+                    </td>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {account.email}
+                    </td>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {account.phone}
+                    </td>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {account.status}
+                    </td>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      <button onClick={() => updateAccount(account.id)}>
+                        Update
+                      </button>
+                      {!account.isDeleted && (
+                        <button onClick={() => deleteAccount(account.id)}>
+                          Delete
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      };
+    
+      AccountTable.propTypes = {
+        accounts: PropTypes.array.isRequired, // accounts should be an array
+        title: PropTypes.string.isRequired, // title should be a string
+      };
 }
 
 export default CartPage;
