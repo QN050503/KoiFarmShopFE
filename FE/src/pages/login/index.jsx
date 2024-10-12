@@ -1,9 +1,14 @@
 // import React from 'react'
 import AuthenTemplate from "../../components/authen-template";
-import { Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import HomePage from "../home";
+import api from "../../config/axios";
+import RegisterPage from "../register";
 // import { gooleProvider } from "../../config/firebase";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
@@ -41,7 +46,9 @@ function LoginPage() {
         {/* //link react router dom */}
         <Link to="/register">Register new account</Link>
 
-        <button>Login</button>
+        <Button type="primary" htmlType="submit">
+          Login
+        </Button>
         {/* <button onClick={handleLoginGoole}>Login Goole</button> */}
       </Form>
     </AuthenTemplate>
