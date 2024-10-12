@@ -140,7 +140,10 @@ const AccountPage = () => {
   // Delete an account
   const deleteAccount = async (id) => {
     try {
-      await axios.delete(`https://localhost:7229/api/Accounts/${id}`);
+      await axios.patch(`https://localhost:7229/api/Accounts/${id}`, {
+        status: "Inactive",
+        isDeleted: "true",
+      });
       fetchAccounts(); // Refresh the list after deletion
     } catch (error) {
       console.error("Error deleting account:", error);
