@@ -2,105 +2,75 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import Cart from "../../components/cart/cartComponent";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CartPage() {
+    const [cartList, setCartList] = useState([]);
 
     useEffect(() => {
         fetchCart();
-    })
+    }, []); // Empty array ensures it runs only once after the initial render
 
     const fetchCart = async () => {
         try {
             const response = await axios.get("https://localhost:7229/api/Cart");
             const cartData = response.data;
-
-            const cartList = cartData.map(
-                (item) => new Cart (
-                    item.id,
-                    item.orderId,
-                    item.price,
-                    item.totalPrice,
-                    item.quantity,
-                    item.status,
-                    item.createdDate,
-                    item.modifiedDate,
-                    item.deletedDate,
-                    item.isDeleted,
-                    item.cartDetails,
-                    item.order
-                )
-            );
+            setCartList(cartData); // Store the cart data in state
         } catch (error) {
-            console.error("Error fetch cart data: ", error)
+            console.error("Error fetching cart data: ", error);
         }
-    }
+    };
 
-    const CartTable = ({ carts, title }) => {
-        return (
-          <div>
-            <h2>{title}</h2>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>ID</th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Name
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Email
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Phone
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Status
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {accounts.map((account) => (
-                  <tr key={account.id}>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
-                      {account.id}
-                    </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
-                      {account.name}
-                    </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
-                      {account.email}
-                    </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
-                      {account.phone}
-                    </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
-                      {account.status}
-                    </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
-                      <button onClick={() => updateAccount(account.id)}>
-                        Update
-                      </button>
-                      {!account.isDeleted && (
-                        <button onClick={() => deleteAccount(account.id)}>
-                          Delete
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        );
-      };
-    
-      AccountTable.propTypes = {
-        accounts: PropTypes.array.isRequired, // accounts should be an array
-        title: PropTypes.string.isRequired, // title should be a string
-      };
+    return (
+        <div className="container mt-5">
+            <CartTable carts={cartList} title="Cart Items" />
+        </div>
+    );
 }
+
+const CartTable = ({ carts, title }) => {
+    return (
+        <div className="card">
+            <div className="card-header">
+                <h2 className="card-title">{title}</h2>
+            </div>
+            <div className="card-body">
+                <table className="table table-striped table-bordered">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Order ID</th>
+                            <th>Price</th>
+                            <th>Total Price</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Created Date</th>
+                            <th>Modified Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {carts.map((cart) => (
+                            <tr key={cart.id}>
+                                <td>{cart.id}</td>
+                                <td>{cart.orderId}</td>
+                                <td>{cart.price}</td>
+                                <td>{cart.totalPrice}</td>
+                                <td>{cart.quantity}</td>
+                                <td>{cart.status}</td>
+                                <td>{new Date(cart.createdDate).toLocaleString()}</td>
+                                <td>{new Date(cart.modifiedDate).toLocaleString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+};
+
+CartTable.propTypes = {
+    carts: PropTypes.array.isRequired, // carts should be an array
+    title: PropTypes.string.isRequired, // title should be a string
+};
 
 export default CartPage;

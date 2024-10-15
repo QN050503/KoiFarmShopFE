@@ -8,6 +8,7 @@ import RegisterPage from "./pages/register";
 import AccountPage from "./pages/account";
 import Header from "./components/a-z_component/header";
 import CartPage from "./pages/cart";
+import KoiFishDetails from "./pages/koiFish";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/koi/:id" element={<KoiFishDetails />} />
         </Routes>
       </Router>
     </>
