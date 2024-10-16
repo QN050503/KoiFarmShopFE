@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import KoiFishDetails from "../koiFish";
 
 function HomePage() {
   const [koiList, setKoiList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const openDetailHandler = (orchid) => {
+    
+  };
 
   useEffect(() => {
     fetch("https://localhost:7229/api/KoiFish") // Fetch list of Koi from API

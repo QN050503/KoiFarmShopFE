@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/home";
@@ -9,12 +10,12 @@ import AccountPage from "./pages/account";
 import Header from "./components/a-z_component/header";
 import CartPage from "./pages/cart";
 import KoiFishDetails from "./pages/koiFish";
+import Dashboard from "./pages/Admin/Dashboard";
 
 function App() {
   return (
     <>
       <Router>
-        <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -22,6 +23,7 @@ function App() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/koi/:id" element={<KoiFishDetails />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Router>
     </>
